@@ -2,18 +2,127 @@
  * @Author: lijing 346519079@qq.com
  * @Date: 2024-11-22 17:59:20
  * @LastEditors: lijing 346519079@qq.com
- * @LastEditTime: 2024-11-22 17:59:26
+ * @LastEditTime: 2024-11-28 15:26:57
  * @FilePath: /turntable.github.io/index.html
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ * @Description: 
 -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    111
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>转盘抽奖</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+      }
+      .container{
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .content {
+        width: 375px;
+        height: 667px;
+        background-image: url("./img/lml-bg.png");
+        background-position: center;
+        background-size: cover;
+        border-radius: 3px;
+        position: relative;
+      }
+
+      #lucky-wheel {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -10%);
+      }
+    </style>
+  </head>
+  <body>
+    <section class="container">
+      <div class="content">
+        <div id="lucky-wheel"></div>
+      </div>
+    </section>
+
+    <script src="https://unpkg.com/lucky-canvas@1.7.25"></script>
+    <script>
+      // const oddColor = '#ffc26d'
+      const oddColor = '#acdaf9'
+      const evenColor = '#33adfb'
+      const myLucky = new LuckyCanvas.LuckyWheel("#lucky-wheel", {
+        width: "250px",
+        height: "250px",
+        blocks: [{ padding: "10px", background: "#0086f6" }],
+        prizes: [
+          {
+            range: 20,
+            background: evenColor,
+            fonts: [{ text: "¥2.8元", top: "10px", fontColor: "#fff" }],
+          },
+          {
+            range: 10,
+            background: oddColor,
+            fonts: [{ text: "¥5.8", top: "10px", fontColor: "#fff" }],
+          },
+          {
+            range: 10,
+            background: evenColor,
+            fonts: [{ text: "¥8.8 ", top: "10px", fontColor: "#fff" }],
+          },
+          {
+            range: 22,
+            background: oddColor,
+            fonts: [{ text: "再来一次", top: "10px", fontColor: "#fff" }],
+          },
+          {
+            range: 10,
+            background: evenColor,
+            fonts: [{ text: "¥10.8 ", top: "10px", fontColor: "#fff" }],
+          },
+          {
+            range: 5,
+            background: oddColor,
+            fonts: [{ text: "¥28.8", top: "10px", fontColor: "#fff" }],
+          },
+          {
+            range: 2,
+            background: evenColor,
+            fonts: [{ text: "¥58.8", top: "10px", fontColor: "#fff" }],
+          },
+          {
+            range: 22,
+            background: oddColor,
+            fonts: [{ text: "再来一次", top: "10px", fontColor: "#fff" }],
+          },
+        ],
+        buttons: [
+          {
+            radius: "20%",
+            background: "#0086f6",
+            pointer: true,
+            fonts: [{ text: "开始", top: "-10px", fontColor: "#fff" }],
+          },
+        ],
+        start: function () {
+          // 开始游戏
+          myLucky.play();
+          // 使用定时器模拟接口
+          setTimeout(() => {
+            // 结束游戏
+            myLucky.stop();
+          }, 1000);
+        },
+      });
+    </script>
+  </body>
 </html>
