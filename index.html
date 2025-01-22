@@ -2,7 +2,7 @@
  * @Author: lijing 346519079@qq.com
  * @Date: 2024-11-22 17:59:20
  * @LastEditors: lijing 346519079@qq.com
- * @LastEditTime: 2025-01-22 17:10:26
+ * @LastEditTime: 2025-01-22 17:48:58
  * @FilePath: /turntable.github.io/index.html
  * @Description: 
 -->
@@ -13,6 +13,11 @@
     <link rel="icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>转盘抽奖</title>
+    <link
+      rel="stylesheet"
+      href="https://fastly.jsdelivr.net/npm/vant@4/lib/index.css"
+    />
+
     <style>
       * {
         margin: 0;
@@ -55,15 +60,19 @@
     </style>
   </head>
   <body>
-    <section class="container">
+    <section class="container" id="app">
       <div class="content">
         <div id="lucky-wheel"></div>
       </div>
     </section>
 
     <script src="https://unpkg.com/lucky-canvas@1.7.25"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+    <script src="https://fastly.jsdelivr.net/npm/vant@4/lib/vant.min.js"></script>
     <script>
-      const storageKey = "LUCKY_WHEEL";
+      const { mode } = getUrlParams(location.href);
+
+      const storageKey = mode === "vip" ? "LUCKY_WHEEL_VIP" : "LUCKY_WHEEL_NOR";
       const TIME_INTERVAL = 3600000; // 1小时
 
       // 获取当前时间
@@ -84,7 +93,6 @@
         const result = Object.fromEntries(urlSearchParams.entries());
         return result;
       }
-      const { mode } = getUrlParams(location.href);
 
       const oddColor = "#acdaf9"; // 奇数颜色
       const evenColor = "#33adfb"; // 偶数颜色
@@ -211,13 +219,11 @@
           // prize为选中的奖品
           const { text } = prize.fonts[0];
           if (text === "再来一次") {
-            alert("再来一次");
-
+            vant.showToast("再来一次");
             return;
           }
 
-          alert(`恭喜您获得${text}`);
-
+          vant.showToast(`恭喜您获得${text}`);
           localStorage.setItem(storageKey, getTime()); // 设置为已抽奖
           const luckyWheel = document.getElementById("lucky-wheel");
           luckyWheel.classList.add("disabled");
