@@ -2,7 +2,7 @@
  * @Author: lijing 346519079@qq.com
  * @Date: 2024-11-22 17:59:20
  * @LastEditors: lijing 346519079@qq.com
- * @LastEditTime: 2025-01-22 16:48:41
+ * @LastEditTime: 2025-01-22 17:10:26
  * @FilePath: /turntable.github.io/index.html
  * @Description: 
 -->
@@ -45,8 +45,6 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -10%);
-        /* cursor: not-allowed;
-        pointer-events: none; */
       }
 
       .disabled {
@@ -65,15 +63,19 @@
 
     <script src="https://unpkg.com/lucky-canvas@1.7.25"></script>
     <script>
-      const storageKey = 'LUCKY_WHEEL';
+      const storageKey = "LUCKY_WHEEL";
+      const TIME_INTERVAL = 3600000; // 1小时
 
-      window.onload = function () {
-        const isLucky = localStorage.getItem(storageKey);
-        if (isLucky) {
-          const luckyWheel = document.getElementById("lucky-wheel");
-          luckyWheel.classList.add("disabled");
-        }
-      };
+      // 获取当前时间
+      function getTime() {
+        return new Date().getTime();
+      }
+
+      // 判断是否超过1小时
+      function hasOverOneHour() {
+        const oldTime = localStorage.getItem(storageKey) || 0;
+        return getTime() - oldTime > TIME_INTERVAL;
+      }
 
       // 获取url参数
       function getUrlParams(url) {
@@ -86,6 +88,14 @@
 
       const oddColor = "#acdaf9"; // 奇数颜色
       const evenColor = "#33adfb"; // 偶数颜色
+
+      window.onload = function () {
+        // 如果已经抽过奖且未超过1小时，则禁用抽奖
+        if (!hasOverOneHour()) {
+          const luckyWheel = document.getElementById("lucky-wheel");
+          luckyWheel.classList.add("disabled");
+        }
+      };
 
       // 普通奖品列表
       const normalPrize = [
@@ -202,13 +212,13 @@
           const { text } = prize.fonts[0];
           if (text === "再来一次") {
             alert("再来一次");
-            
+
             return;
           }
 
           alert(`恭喜您获得${text}`);
 
-          localStorage.setItem(storageKey, "1"); // 设置为已抽奖
+          localStorage.setItem(storageKey, getTime()); // 设置为已抽奖
           const luckyWheel = document.getElementById("lucky-wheel");
           luckyWheel.classList.add("disabled");
         },
